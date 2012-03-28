@@ -16,4 +16,5 @@ Getting Started
 
 3. Install Django==1.3.1
 
-Run the server with:: python manage.py runserver
+Run the server with::
+    python manage.py runserver
