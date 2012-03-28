@@ -222,9 +222,9 @@
                 $("div.tab-pane").load("/volumes/create_volume_view");
 
      
-//                var refreshId = setInterval(function() {
-//                    $('div#running_instances').load('/instances/describe_instances');
-//                }, 10000);
+                var refreshId = setInterval(function() {
+                    $('div#running_instances').load('/instances/describe_instances');
+                }, 10000);
             });
             $("li#tab_describe_volumes").click(function() {
                 $("div.tab-pane").html('<center><img src="{{ STATIC_URL }}images/loading.gif" /></center>');
