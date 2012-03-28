@@ -4,6 +4,8 @@ Nilgiri: Eucalyptus Management Tool
 
 Nilgiri is a Django and Boto based web console that works with Eucalyptus.
 
+<img src="http://mdshaonimran.github.com/images/nilgiri.png" />
+
 Description
 ===========
 
