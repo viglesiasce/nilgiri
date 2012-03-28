@@ -21,4 +21,4 @@ Getting Started
 
 Run the server with::
 
-  `$ python manage.py runserver`
+    $ python manage.py runserver
