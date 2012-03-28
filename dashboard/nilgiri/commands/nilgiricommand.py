@@ -49,7 +49,7 @@ class NilgiriCommand(object):
     def __init__(self, is_euca=False, debug=False):
         self.region = RegionInfo()
         self.filters = {}
-        self.ec2_user_access_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        self.ec2_user_access_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
         self.ec2_user_secret_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 
 
