@@ -49,15 +49,15 @@ class NilgiriCommand(object):
     def __init__(self, is_euca=False, debug=False):
         self.region = RegionInfo()
         self.filters = {}
-        self.ec2_user_access_key = 'WKy3rMzOWPouVOxK1p3Ar1C2uRBwa2FBXnCw'
-        self.ec2_user_secret_key = 'PWdVhAPsGqQxZkdOSucsMWgQiZm1cQBNcITSQ'
+        self.ec2_user_access_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        self.ec2_user_secret_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 
 
     def make_ec2_connection(self):
         self.is_secure = True
         self.debug = 1
         self.region.name = 'eucalyptus'
-        self.region.endpoint = '111.221.6.222'
+        self.region.endpoint = 'XXX.XXX.XXX.XXX'
         self.service_path = '/services/Eucalyptus'
         self.port = 8773
 
