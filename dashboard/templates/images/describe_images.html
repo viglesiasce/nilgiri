@@ -1,0 +1,52 @@
+<h3>Available Images</h3>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Owner</th>
+            <th>State</th>
+            <th>Type</th>
+            <th>Architecture</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for image in images %}
+        {% if "emi" in image.id %}
+        <tr>
+            <td>{{ image.id }}</td>
+            <td>{{ image.location }}</td>
+            <td>{{ image.ownerId }}</td>
+            <td>{{ image.state }}</td>
+            {% if image.is_public %}
+            <td>Public</td>
+            {% else %}
+            <td>Private</td>
+            {% endif %}
+            <td>{{ image.architecture }}</td>
+            <td><button data-loading-text="loading..." class="btn btn-primary select_image" value="{{ image.id }}">Select</button></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $("button.select_image").click(function() {
+        var that = $(this);
+        var params={
+            'id':that.attr("value"),
+        };
+        $.ajax({
+            url: "/keypairs/keypairs",
+            type: "POST",
+            success: function(data) {
+                $("input#selected_image").attr("value", that.attr("value"));
+                $("div.launch_modal_div").html('<input id="selected_image" type="hidden" value="' + that.attr("value") + '" />' + data);
+            },
+            crossDomain: false
+        });
+    });
+        
+</script>

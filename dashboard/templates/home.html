@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Nilgiri · Webconsole for Eucalyptus</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Le styles -->
+        <link href="{{ STATIC_URL }}assets/css/bootstrap.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}assets/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}assets/css/docs.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Le fav and touch icons -->
+        <link rel="shortcut icon" href="{{ STATIC_URL }}assets/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}assets/ico/apple-touch-icon-57-precomposed.png">
+
+    </head>
+
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+      
+        <input id="selected_image" type="hidden" value="" />
+        <input id="selected_key" type="hidden" value="" />
+        <input id="selected_group" type="hidden" value="" />
+        <input id="final_instance_type" type="hidden" value="m1.small" />
+        <input id="final_addressing_type" type="hidden" value="None" />
+
+        <!-- Navbar
+          ================================================== -->
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="">
+                                <a href="#">Home</a>
+                            </li>
+                            <li class="">
+                                <a href="#">Admin</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- Masthead
+            ================================================== -->
+            <header class="jumbotron subhead" id="overview">
+                <h1>Nilgiri for Eucalyptus</h1>
+                <p class="lead">Managing cloud is now easier than ever. &mdash; <a href="http://nilgiri.shaon.me/" target="_blank">Nilgiri</a> 0.0.1
+                <div class="subnav">
+                    <ul class="nav nav-pills">
+                        <li><a href="#instances">Instances</a></li>
+                        <li><a href="#launch">Launch an instance</a></li>
+                        <li><a id="local_menu_volumes" href="#volumes">Volumes</a></li>
+                    </ul>
+                </div>
+            </header>
+
+
+
+            <!-- Instances
+          ================================================== -->
+            <section id="instances">
+                <div class="page-header">
+                    <h1>Instances <small>Your running instances </small></h1>
+
+                </div>
+
+                <div class="row">
+                    <div id="running_instances" class="span12 columns image_section"><center><img src="{{ STATIC_URL }}images/loading.gif" /></center></div>
+                </div>
+            </section>
+            <script src="{{ STATIC_URL }}assets/js/jquery.js"></script>
+            <script src="{{ STATIC_URL }}js/main.js"></script>
+
+
+
+            <!-- Modal
+            ================================================== -->
+            <section id="launch">
+                <div class="page-header">
+                    <h1>Launch <small>Launch a new instance</small></h1>
+                </div>
+
+                <div class="row">
+                    <div class="span3 columns">
+                        <h3>About Instance</h3>
+                        <p>Select an image, select/create key and group. Finally, launch an instance.</p>
+                    </div>
+                    <div class="span9 columns">
+                        <h2>Live demo</h2>
+                        <div id="myModal" class="modal hide fade" style="width: 860px;">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal" >&times;</a>
+                                <h3>Launch Instance</h3>
+                            </div>
+                            <div class="modal-body launch_modal_div" style="height: 400px"><center><img src="{{ STATIC_URL }}images/loading.gif" /></div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                        <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large launch_modal_button">Launch an instance</a>
+                        <script>
+    
+                            $("a.launch_modal_button").click(function() {
+                                $("div.modal-footer").html('<a href="#" class="btn" data-dismiss="modal" >Close</a>');
+                                $.ajax({
+                                    url: "/images/describe_images",
+                                    type: "POST",
+                                    success: function(data) {
+                                        $("div.launch_modal_div").html(data);
+                                    },
+                                    crossDomain: false
+                                });
+                            });
+                        </script>
+                        <hr>
+                        <div class="alert alert-info"><strong>Heads up!</strong> You will only be using EMIs <code>emi-xxxxxx</code></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Volumes
+          ================================================== -->
+            <section id="volumes">
+                <div class="page-header">
+                    <h1>Volumes <small>Available volumes in clusters</small></h1>
+                </div>
+
+                <div class="row">
+                    <div class="span12 columns">
+                        <h2>Description</h2>
+                        <p>Eucalyptus lets users create dynamic block volumes, which are analogous to raw block storage devices that can be used with VM instances. Users can create, attach, detach, describe, bundle, and delete volumes.</p>
+                        <h3>Available Volumes</h3>
+                        <hr>
+
+                    </div>
+                </div>
+            </section>
+
+            <div class="tabbable" style="margin-bottom: 9px;">
+                <ul class="nav nav-tabs">
+                    <li id="tab_create_volumes" class="active"><a href="#1" data-toggle="tab">Create Volumes</a></li>
+                    <li id="tab_describe_volumes"><a href="#2" data-toggle="tab">Volumes</a></li>
+                    <li id="tab_snapshots"><a href="#3" data-toggle="tab">Snapshots</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="1">
+                        <center><img src="{{ STATIC_URL }}images/loading.gif" /></center>
+                    </div>
+                    <div class="tab-pane" id="2">
+                        <center><img src="{{ STATIC_URL }}images/loading.gif" /></center>
+                    </div>
+                    <div class="tab-pane" id="3">
+                        <center><img src="{{ STATIC_URL }}images/loading.gif" /></center>
+                    </div>
+                </div>
+            </div> <!-- /tabbable -->
+
+
+            <!-- Footer
+             ================================================== -->
+            <footer class="footer">
+                <p class="pull-right"><a href="#">Back to top</a></p>
+                <p>Designed for <a href="http://www.amadeyr.org">Amadeyr Cloud Pvt.</a> and tested on <a href="http://open.eucalyptus.com">Eucalyptus</a> cloud ecosystem.</p>
+            </footer>
+
+        </div><!-- /container -->
+
+
+
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <!-- <script src="{{ STATIC_URL }}assets/js/jquery.js"></script> -->
+        <script src="{{ STATIC_URL }}assets/js/google-code-prettify/prettify.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-transition.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-alert.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-modal.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-dropdown.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-scrollspy.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-tab.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-tooltip.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-popover.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-button.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-collapse.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-carousel.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/bootstrap-typeahead.js"></script>
+        <script src="{{ STATIC_URL }}assets/js/application.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $.ajax({
+                    url: "/instances/describe_instances",
+                    type: "POST",
+                    success: function(data) {
+                        $("div#running_instances").html(data);
+                    },
+                    crossDomain: false
+                });
+
+                $("div.tab-pane").load("/volumes/create_volume_view");
+
+     
+//                var refreshId = setInterval(function() {
+//                    $('div#running_instances').load('/instances/describe_instances');
+//                }, 10000);
+            });
+            $("li#tab_describe_volumes").click(function() {
+                $("div.tab-pane").html('<center><img src="{{ STATIC_URL }}images/loading.gif" /></center>');
+                $.ajax({
+                    url: "/volumes/describe_volumes",
+                    type: "POST",
+                    success: function(data) {
+                        $("div.tab-pane").html(data);
+                    },
+                    crossDomain: false
+                });
+            });
+
+            $("li#tab_create_volumes").click(function() {
+                $("div.tab-pane").load("/volumes/create_volume_view");
+            });
+    
+            $("li#tab_snapshots").click(function() {
+                $("div.tab-pane").html('<p>Snapshots will be here.</p>');
+
+            });
+        </script>
+
+    </body>
+</html>

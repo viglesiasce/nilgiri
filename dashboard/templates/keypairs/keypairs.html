@@ -1,0 +1,73 @@
+<h3>Create new keypairs</h3>
+<div class="key_action">
+    <div class="well">
+        <input type="text" id="key_name" class="span3" style="margin: 0 auto;" />
+        <button data-loading-text="loading..." class="btn btn-primary create_key" value="">Create</button>
+    </div>
+    <div class="accordion key_save" id="accordion2">
+
+    </div>
+</div>
+
+<h3>Available Keys</h3>
+<div id="available_keys"><center><img src="{{ STATIC_URL }}images/loading.gif" /></center></div>
+
+
+<script>
+    $(document).ready(function() {
+        $("div.modal-footer").html('<button data-loading-text="loading..." class="btn btn-primary modal_back">Back</button> <a href="#" class="btn close_btn" data-dismiss="modal" >Close</a>');
+        //$('div#available_keys').load('/keypairs/describe_keypairs');
+        $.ajax({
+            url: "/keypairs/describe_keypairs",
+            type: "POST",
+            success: function(data) {
+                $('div#available_keys').html(data);
+            },
+            crossDomain: false
+        });
+    });
+    
+    $("button.create_key").click(function() {
+        var that = $(this);
+        var params={
+            'key_name':$("#key_name").val()
+        }
+        $(".create_key").button('loading');
+        $(".key_alert").fadeOut(500);
+        
+        $.ajax({
+            url: "/keypairs/create_keypair",
+            type: "POST",
+            data: params,
+            success: function(data) {
+                //document.location = '/keypairs/create_keypair';
+                $(".create_key").button('reset');
+                $("input#key_name").text("");
+                if(data != "KeyPair") {
+                    $('div#available_keys').load('/keypairs/describe_keypairs');
+                    $(".key_action").append('<div class="alert alert-info key_alert"><strong>Heads up! </strong><code>' + $("#key_name").val() + '</code> keypair added.</div>');
+                    $(".key_save").html(data);
+                }
+                else {
+                    $(".key_action").append('<div class="alert alert-info key_alert"><strong>Heads up! </strong>Keypair <code>' + $("#key_name").val() +'</code> already exists.</div>');
+                }
+            },
+            crossDomain: false
+        });
+    });
+    
+    $("button.modal_back").unbind('click');
+    $("button.modal_back").click(function() {
+        $("div.launch_modal_div").html('<center><img src="{{ STATIC_URL }}images/loading.gif" /></center>');
+        $("div.modal-footer").html('<a href="#" class="btn" data-dismiss="modal" >Close</a>');
+        $.ajax({
+            url: "/images/describe_images",
+            type: 'POST',
+            success: function(data) {
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+    });
+    
+</script>

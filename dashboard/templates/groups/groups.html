@@ -1,0 +1,62 @@
+<h3>Create new Security Group</h3>
+<div class="group_action">
+    <div class="well">
+        <strong>Name: </strong><input type="text" id="group_name" class="span3" style="margin: 0 auto;" />&nbsp;
+        <strong>Description: </strong><input type="text" id="group_description" class="span3" style="margin: 0 auto;" />
+        <button data-loading-text="loading..." class="btn btn-primary create_group" value="">Create</button>
+    </div>
+    <div class="accordion group_save" id="accordion2">
+
+    </div>
+</div>
+
+<h3>Available Groups</h3>
+<div id="available_groups"><center><img src="{{ STATIC_URL }}images/loading.gif" /></div>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "/groups/describe_groups",
+            type: "POST",
+            success: function(data) {
+                $('div#available_groups').html(data);
+            },
+            crossDomain: false
+        });
+    });
+        
+    $("button.create_group").click(function() {
+        var that = $(this);
+        var params={
+            'group_name':$("#group_name").val(),
+            'group_description':$("#group_description").val()
+        }
+        $(".create_group").button('loading');
+        $.ajax({
+            url: "/groups/create_group",
+            type: "POST",
+            data: params,
+            success: function(data) {
+                $(".create_group").button('reset');
+                $("input#group_name").val("");
+                $("input#group_description").val("");
+                $('div#available_groups').load("/groups/describe_groups");
+            },
+            crossDomain: false
+        });
+    });
+    
+    $("button.modal_back").unbind('click');
+    $("button.modal_back").click(function() {
+        $("div.launch_modal_div").html('<center><img src="{{ STATIC_URL }}images/loading.gif" /></center>');
+        $.ajax({
+            url: "/keypairs/keypairs",
+            type: 'POST',
+            success: function(data) {
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+        
+    });
+</script>

@@ -1,0 +1,70 @@
+<table class="table table-bordered table-striped">
+    {% for group in groups %}
+    <tr>
+        <th>Owner</th>
+        <td colspan="2">{{ group.owner_id }}</td>
+        <th>Name</th>
+        <td colspan="2">{{ group.name }}</td>
+        <th>Action</th>
+    </tr>
+    {% for rule in group.rules %}
+    <tr>
+        <th>Protocol</th>
+        <td>{{ rule.ip_protocol }}</td>
+        <th>Port</th>
+        <td>{{ rule.from_port }} - {{ rule.to_port }}</td>
+
+        {% for grant in rule.grants %}
+
+        {% if grant.owner_id or grant.name %}
+        {% if grant.owner_id %}
+        <td>{{ grant.owner_id }}</td>
+        {% endif %}
+        {% if grant.name %}
+        <td>{{ grant.owner_id }}</td>
+        {% endif %}
+        {% else %}
+        <th>CIDR</th>
+        <td>{{ grant.cidr_ip }}</td>
+        <td><button data-loading-text="loading..." class="btn btn-danger revoke_rules" ip_protocol="{{ rule.ip_protocol }}" from_port="{{ rule.from_port }}" to_port="{{ rule.to_port }}" cidr_ip="{{ grant.cidr_ip }}">Revoke</button></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+</table>
+<script>
+    $("button.revoke_rules").click(function() {
+        var that = $(this);
+        var params = {
+            'group_name':$("input#group_name").val(),
+            'ip_protocol': that.attr("ip_protocol"),
+            'from_port': that.attr("from_port"),
+            'to_port': that.attr("to_port"),
+            'cidr_ip': that.attr("cidr_ip")
+        }
+        $.ajax({
+            url: '/groups/revoke_rules',
+            type: 'POST',
+            data: params,
+            success: function(data) {
+                $.ajax({
+                    url: '/groups/describe_group',
+                    type: 'POST',
+                    data: { 'group_name':$("input#group_name").val() },
+                    success: function(data) {
+                        $("div.describe_group").html(data);
+                    },
+                    crossDomain: false
+                });
+            },
+            crossDomain: false
+        });
+            
+        /*            alert($("input#group_name").val() + " " +
+              that.attr("ip_protocol") + " " +
+              that.attr("from_port") + " " +
+              that.attr("to_port") + " " +
+              that.attr("cidr_ip")); */
+    });
+</script>

@@ -1,0 +1,24 @@
+    <table class="table table-bordered table-striped">
+        <thead>
+            <th>Protocol</th>
+            <th>From Port</th>
+            <th>To Port</th>
+            <th>CIDR IP</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select id="ip_protocol">
+                        <option value="tcp">TCP</option>
+                        <option value="udp">UDP</option>
+                        <option value="icmp">ICMP</option>
+                    </select>
+                </td>
+                <td><input id="from_port" style="width: auto;" type="text" /></td>
+                <td><input id="to_port" style="width: auto;" type="text" /></td>
+                <td><input id="cidr_ip" style="width: auto;" type="text" /></td>
+                <td><button class="btn btn-primary save_rules" href="#" value="">Save</button></td>
+            </tr>
+        </tbody>
+    </table>

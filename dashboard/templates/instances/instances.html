@@ -1,0 +1,13 @@
+Yes, it is loading.
+
+{{ reservations }}
+
+<script src="{{ STATIC_URL }}assets/js/jquery.js"></script>
+<script src="{{ STATIC_URL }}js/main.js"></script>
+<script>
+    $(document).ready(function() {
+        $.post("/instances/describe_instances", function(data) {
+            alert(data);
+        });
+    });
+</script>

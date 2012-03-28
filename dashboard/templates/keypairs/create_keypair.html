@@ -1,0 +1,17 @@
+<div class="accordion-group keypair_material">
+    <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+            Show keypair
+        </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+        <div class="accordion-inner keypair_material">
+            <textarea id="saving_key" style="width: 100%">{{ keypair.material }}</textarea>
+        </div>
+    </div>
+</div>
+<script>
+    $("#saving_key").hover(function() {
+        this.select();
+    });
+</script>

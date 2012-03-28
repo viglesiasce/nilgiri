@@ -1,0 +1,69 @@
+<div class="well">
+    <p>Image: {{ image }}</p>
+    <p>Key: {{ key }}</p>
+    <p>Group: {{ group }}</p>
+</div>
+<h3>Instance Type</h3>
+<div class="btn-group" data-toggle="buttons-radio">
+    <button class="btn btn-primary instance_type" value="m1.small" >m1.small</button>
+    <button class="btn btn-primary instance_type" value="c1.medium" >c1.medium</button>
+    <button class="btn btn-primary instance_type" value="m1.large" >m1.large</button>
+    <button class="btn btn-primary instance_type" value="m1.xlarge" >m1.xlarge</button>
+    <button class="btn btn-primary instance_type" value="c1.xlarge" >c1.xlarge</button>
+</div>
+<br />
+<h3>Addressing Type</h3>
+<div class="btn-group" data-toggle="buttons-radio">
+    <button class="btn btn-primary addressing_type" value="None" >None</button>
+    <button class="btn btn-primary addressing_type" value="private" >Private</button>
+</div>
+
+
+<br />
+<button class="btn btn-primary btn-large launch_instance_button" data-loading-text="Launching..." style="margin-bottom: 30px;">Launch instance</button>
+
+<script>
+    $("button.launch_instance_button").click(function() {
+        $("button.launch_instance_button").button('loading')
+        var params = {
+            'selected_image': $("#selected_image").attr("value"),
+            'selected_key': $("#selected_key").attr("value"),
+            'selected_group': $("#selected_group").attr("value"),
+            'instance_type': $("#final_instance_type").attr("value"),
+            'addressing_type': $("#final_addressing_type").attr("value")
+        }
+
+        $.ajax({
+            url: "/instances/run_instances",
+            type: 'POST',
+            data: params,
+            success: function(data) {
+                $("button.launch_instance_button").button('reset');
+                $("div.modal-footer").html('<a href="#" class="btn" data-dismiss="modal" >Close</a>');
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+    });
+    
+    $("button.modal_back").unbind('click');
+    $("button.modal_back").click(function() {
+        $.ajax({
+            url: "/groups/groups",
+            type: 'POST',
+            success: function(data) {
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+        
+    });
+    
+    $("button.instance_type").click(function() {
+        $("input#final_instance_type").attr("value", $(this).attr("value"));
+    });
+       
+    $("button.addressing_type").click(function() {
+        $("input#final_addressing_type").attr("value", $(this).attr("value"));
+    });
+</script>

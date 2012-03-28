@@ -1,0 +1,46 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 150px;">Keyname</th>
+            <th>fingerprint</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for keypair in keypairs  %}
+        <tr>
+            <td>{{ keypair.name }}</td>
+            <td>{{ keypair.fingerprint }}</td>
+            <td>
+                <button data-loading-text="loading..." class="btn btn-primary select_key" value="{{ keypair.name }}">Select</button>
+                <button class="btn btn-danger delete_key" href="#" value="{{ keypair.name }}">Delete</button>
+            </td>
+        </tr>
+        {% endfor  %}
+    </tbody>
+</table>
+
+<script>
+    $("button.select_key").click(function() {
+        var that = $(this);
+        var params={
+            'id':that.attr("value"),
+            'selected_image': $("#selected_image").attr("value")
+        };
+        
+        $.post("/groups/groups", function(data) {
+            $("input#selected_key").attr("value", that.attr("value"));
+            $("div.launch_modal_div").html(data);
+        });
+    });
+    
+    $("button.delete_key").click(function() {
+        var that = $(this);
+        var params={
+            'key_name':that.attr("value")
+        }
+        $.post("/keypairs/delete_keypair", params, function(data) {
+            that.parents("tr").hide();
+        });
+    });
+</script>

@@ -1,0 +1,77 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 150px;">Owner</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for group in groups  %}
+        <tr>
+            <td>{{ group.owner_id }}</td>
+            <td>{{ group.name }}</td>
+            <td>{{ group.description }}</td>
+            <td>
+                <button data-loading-text="loading..." class="btn btn-primary select_group" value="{{ group.name }}">Select</button>
+                <button data-loading-text="loading..." class="btn btn-primary edit_group" value="{{ group.name }}">Edit</button>
+                <button data-loading-text="loading..." class="btn btn-danger delete_group" value="{{ group.name }}">Delete</button>
+            </td>
+        </tr>
+        {% endfor  %}
+    </tbody>
+</table>
+
+<script>
+    $("button.select_group").click(function() {
+        var that = $(this);
+        var params = {
+            'selected_image': $("#selected_image").attr("value"),
+            'selected_key': $("#selected_key").attr("value"),
+            'selected_group': $("#selected_group").attr("value")
+        }
+        $.ajax({
+            url: "/instances/launch_instance",
+            type: 'POST',
+            data: params,
+            success: function(data) {
+                $("input#selected_group").attr("value", that.attr("value"));
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+    });
+       
+    $("button.edit_group").click(function() {
+        var that = $(this);
+        var params = {
+            'group_name': that.attr("value")
+        }
+        $.ajax({
+            url: "/groups/edit_group",
+            type: "POST",
+            data: params,
+            success: function(data) {
+                $("div.launch_modal_div").html(data);
+            },
+            crossDomain: false
+        });
+    });
+       
+    $("button.delete_group").click(function() {
+        var that = $(this);
+        var params = {
+            'group_name': that.attr("value")
+        }
+        $.ajax({
+            url: "/groups/delete_group",
+            type: "POST",
+            data: params,
+            success: function(data) {
+                $('div#available_groups').load("/groups/describe_groups");
+            },
+            crossDomain: false
+        });
+    });
+</script>

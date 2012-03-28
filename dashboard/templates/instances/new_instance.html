@@ -1,0 +1,62 @@
+<h3>Your instances</h3>
+<table class="table table-bordered table-striped" style="font-size: 12px;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Owner</th>
+            <th>Groups</th>
+            <th>Instance</th>
+            <th>Image</th>
+            <th>Pub DNS</th>
+            <th>Pvt DNS</th>
+            <th>State</th>
+            <th>Key</th>
+            <th>AMI</th>
+            <th>Type</th>
+            <th>Launce Time</th>
+            <th>Cluster</th>
+            <!-- <th>Kernel</th>
+            <th>Ramdisk</th> -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ reservation.id }}</td>
+            <td>{{reservation.owner_id }}</td>
+            <td>
+                {% for group in reservation.groups %}
+                {{ group.id }} &nbsp;
+                {% endfor %}
+            </td>
+            {% for instance in reservation.instances %}
+            <td>{{ instance.id }}</td>
+            <td>{{ instance.image_id }}</td>
+            <td>{{ instance.public_dns_name }}</td>
+            <td>{{ instance.private_dns_name }}</td>
+
+            <td>{{ instance.state }}</td>
+            <td>{{ instance.key_name }}</td>
+            <td>{{ instance.ami_launch_index }}</td>
+            <td>{{ instance.instance_type }}</td>
+            <td>{{ instance.launch_time }}</td>
+            <td>{{ instance.placement }}</td>
+            <!-- <td>{{ instance.kernel }}</td>
+            <td>{{ instance.ramdisk }}</td> -->
+            {% if instance.state == "running" %}
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}">Terminate</button></td>
+            {% endif %}
+            {% if instance.state == "pending" %}
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}" disabled="disabled">Pending</button></td>
+            {% endif %}
+            {% if instance.state == "shutting-down" %}
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}" disabled="disabled">Shutting-down</button></td>
+            {% endif %}
+            {% if instance.state == "terminated" %}
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}" disabled="disabled">Terminated</button></td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+<div class="alert alert-info"><strong>Heads up!</strong> You will only be using EMIs <code>emi-xxxxxx</code></div>
