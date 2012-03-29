@@ -107,6 +107,7 @@ def revoke_rules(request):
     query_from_port = request.POST.get('from_port', '')
     query_to_port = request.POST.get('to_port', '')
     query_cidr_ip = request.POST.get('cidr_ip', '')
+    
     nilCmd = dashboard.nilgiri.commands.euca.revoke.Revoke()
     status = nilCmd.main_cli(query_group_name, query_ip_protocol, query_from_port, query_to_port, query_cidr_ip)
     return HttpResponse(status)
