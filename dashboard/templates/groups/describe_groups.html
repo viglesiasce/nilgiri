@@ -26,6 +26,7 @@
 <script>
     $("button.select_group").click(function() {
         var that = $(this);
+        $("input#selected_group").attr("value", that.attr("value"));
         var params = {
             'selected_image': $("#selected_image").attr("value"),
             'selected_key': $("#selected_key").attr("value"),
@@ -36,7 +37,6 @@
             type: 'POST',
             data: params,
             success: function(data) {
-                $("input#selected_group").attr("value", that.attr("value"));
                 $("div.launch_modal_div").html(data);
             },
             crossDomain: false
@@ -45,6 +45,7 @@
        
     $("button.edit_group").click(function() {
         var that = $(this);
+        $("input#selected_group").attr("value", that.attr("value"));
         var params = {
             'group_name': that.attr("value")
         }
