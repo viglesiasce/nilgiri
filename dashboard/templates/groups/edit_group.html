@@ -61,15 +61,16 @@
 </tbody>
 </table>
 
+
 <script>
     $(document).ready(function() {
-        $("div.modal-footer").html('<button data-loading-text="loading..." class="btn btn-primary modal_back">Back</button> <a href="#" class="btn close_btn" data-dismiss="modal" >Close</a>');
+        
     });
         
     $("button.revoke_rules").click(function() {
         var that = $(this);
         var params = {
-            'group_name':$("input#group_name").val(),
+            'group_name': $("#selected_group").attr("value"),
             'ip_protocol': that.attr("ip_protocol"),
             'from_port': that.attr("from_port"),
             'to_port': that.attr("to_port"),
@@ -83,7 +84,7 @@
                 $.ajax({
                     url: '/groups/describe_group',
                     type: 'POST',
-                    data: { 'group_name':$("input#group_name").val() },
+                    data: { 'group_name': $("#selected_group").attr("value") },
                     success: function(data) {
                         $("div.describe_group").html(data);
                     },
@@ -92,23 +93,17 @@
             },
             crossDomain: false
         });
-            
-        /*            alert($("input#group_name").val() + " " +
-              that.attr("ip_protocol") + " " +
-              that.attr("from_port") + " " +
-              that.attr("to_port") + " " +
-              that.attr("cidr_ip")); */
     });
         
     $("button.save_rules").click(function() {
         var params = {
-            'group_name':$("input#group_name").val(),
+            'group_name': $("#selected_group").attr("value"),
             'ip_protocol':$("select#ip_protocol").val(),
             'from_port':$("input#from_port").val(),
             'to_port':$("input#to_port").val(),
             'cidr_ip':$("input#cidr_ip").val()
         }
-        //alert($("select#ip_protocol").val() + " " + $("input#from_port").val() + " " + $("input#to_port").val() + " " + $("input#cidr_ip").val() + " " + $("input#group_name").val());
+        
         $.ajax({
             url: '/groups/authorize_group',
             type: 'POST',
@@ -117,7 +112,7 @@
                 $.ajax({
                     url: '/groups/describe_group',
                     type: 'POST',
-                    data: { 'group_name':$("input#group_name").val() },
+                    data: { 'group_name': $("#selected_group").attr("value") },
                     success: function(data) {
                         $("div.describe_group").html(data);
                     },
@@ -132,8 +127,7 @@
     });
     $("button.modal_back").click(function() {
         $.post("/groups/groups", function(data) {
-            $("div.launch_modal_div").html('<input id="selected_image" type="hidden" value="' + $("#selected_image").attr("value") + '" />' +
-                '<input id="selected_key" type="hidden" value="' + $("#selected_key").attr("value") + '" />' + data);
+            $("div.launch_modal_div").html(data);
         });
     });
 </script>
