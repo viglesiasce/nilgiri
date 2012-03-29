@@ -45,8 +45,8 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 SITE_ID = 1
-SITE_BRANDING = 'OpenStack'
-SITE_NAME = 'openstack'
+SITE_BRANDING = 'Nilgiri'
+SITE_NAME = 'Nilgiri'
 # ENABLE_VNC = True
 
 MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
