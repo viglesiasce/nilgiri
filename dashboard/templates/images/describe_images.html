@@ -43,7 +43,7 @@
             type: "POST",
             success: function(data) {
                 $("input#selected_image").attr("value", that.attr("value"));
-                $("div.launch_modal_div").html('<input id="selected_image" type="hidden" value="' + that.attr("value") + '" />' + data);
+                $("div.launch_modal_div").html(data);
             },
             crossDomain: false
         });
