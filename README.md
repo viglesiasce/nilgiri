@@ -14,9 +14,9 @@ Nilgiri is a Django and Boto based web console that works with Eucalyptus.
 
 1. Install virtualenv
 
-2. Install boto 2.2.2
+2. Install boto 2.3.0
 
-3. Install Django==1.3.1
+3. Install Django>=1.3.1 (django==1.4 recommended)
 
 Run the server with:
 
