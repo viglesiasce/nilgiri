@@ -207,7 +207,9 @@
         <script src="{{ STATIC_URL }}assets/js/bootstrap-carousel.js"></script>
         <script src="{{ STATIC_URL }}assets/js/bootstrap-typeahead.js"></script>
         <script src="{{ STATIC_URL }}assets/js/application.js"></script>
-
+<div style="display:none">
+    <input type="hidden" name="csrfmiddlewaretoken" value="$csrf_token"/>
+</div>
         <script>
             $(document).ready(function() {
                 $.ajax({
