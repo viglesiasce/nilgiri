@@ -37,6 +37,10 @@ from django.template.context import RequestContext
 from django.http import HttpResponse
 
 import dashboard.nilgiri.commands.euca.describevolumes
+import dashboard.nilgiri.commands.euca.createvolume
+import dashboard.nilgiri.commands.euca.deletevolume
+import dashboard.nilgiri.commands.euca.attachvolume
+import dashboard.nilgiri.commands.euca.detachvolume
 
 def describe_volumes(request):
     nilCmd = dashboard.nilgiri.commands.euca.describevolumes.DescribeVolumes()
@@ -45,7 +49,41 @@ def describe_volumes(request):
     template = 'volumes/describe_volumes.html'
     return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
 
+
 def create_volume_view(request):
     context = { }
     template = 'volumes/create_volume.html'
     return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+
+
+def create_volume(request):
+    query_vol_size = request.POST.get('vol_size', '')
+    query_vol_zone = request.POST.get('vol_zone', '')
+    nilCmd = dashboard.nilgiri.commands.euca.createvolume.CreateVolume()
+    volume = nilCmd.main_cli(query_vol_size, query_vol_zone)
+    context = { 'volume': volume }
+    template = 'volumes/new_volume.html'
+    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+
+
+def delete_volume(request):
+    query_vol_id = request.POST.get('vol_id', '')
+    nilCmd = dashboard.nilgiri.commands.euca.deletevolume.DeleteVolume()
+    status = nilCmd.main_cli(query_vol_id)
+    return HttpResponse(status)
+
+
+def attach_volume(request):
+    query_vol_id = request.POST.get('vol_id', '')
+    query_instance_id = request.POST.get('instance_id', '')
+    query_device_name = request.POST.get('device_name', '')
+    nilCmd = dashboard.nilgiri.commands.euca.attachvolume.AttachVolume()
+    status = nilCmd.main_cli(query_vol_id, query_instance_id, query_device_name)
+    return HttpResponse(status)
+
+
+def detach_volume(request):
+    query_volume_id = request.POST.get('vol_id', '')
+    nilCmd = dashboard.nilgiri.commands.euca.detachvolume.DetachVolume()
+    status = nilCmd.main_cli(query_volume_id)
+    return HttpResponse(status)
