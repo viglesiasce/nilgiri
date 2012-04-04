@@ -48,13 +48,13 @@
             <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}">Terminate</button></td>
             {% endif %}
             {% if instance.state == "pending" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}" disabled="disabled">Pending</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary" value="" disabled="disabled">Pending</button></td>
             {% endif %}
             {% if instance.state == "shutting-down" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}" disabled="disabled">Shutting-down</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary" value="" disabled="disabled">Shutting-down</button></td>
             {% endif %}
             {% if instance.state == "terminated" %}
-            <td><button id="" data-loading-text="loading..." class="btn btn-primary terminate" value="{{ instance.id }}" disabled="disabled">Terminated</button></td>
+            <td><button id="" data-loading-text="loading..." class="btn btn-primary" value="" disabled="disabled">Terminated</button></td>
             {% endif %}
             {% endfor %}
         </tr>
@@ -63,6 +63,7 @@
 </table>
 <script>
     $("button.terminate").click(function() {
+        $('div#running_instances').delay(2000);
         $('div#running_instances').load("/instances/describe_instances");
         var that = $(this);
         that.text('Terminating').attr('disabled', 'disabled');
