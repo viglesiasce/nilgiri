@@ -1,19 +1,21 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="width: 150px;">Volume ID</th>
+            <th>Volume ID</th>
             <th>Size</th>
             <th>Snapshot ID</th>
             <th>Zone</th>
             <th>Status</th>
             <th>Created</th>
-            <th>Zone</th>
-            <th>Status</th>
+            <th>Instance</th>
+            <th>Device</th>
             <th>Created</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
         {% for volume in volumes %}
+          {% if volume.status != "deleted" %}
         <tr>
             <td>{{ volume.id }}</td>
             <td>{{ volume.size }}</td>
@@ -21,10 +23,109 @@
             <td>{{ volume.zone }}</td>
             <td>{{ volume.status }}</td>
             <td>{{ volume.create_time }}</td>
-            <td>{{ volume.attach_data.instance_id }}</td>
-            <td>{{ volume.attach_data.device }}</td>
+            <td class="attach_instance_view">{{ volume.attach_data.instance_id }}</td>
+            <td class="attach_device_view">{{ volume.attach_data.device }}</td>
             <td>{{ volume.attach_data.attach_time }}</td>
+            <td class="">
+              <div class="attach_action_view">
+            {% if volume.status == "in-use" %}
+              <button data-loading-text="loading..." class="btn btn-primary" disabled="disabled" href="#" value="">Attach</button>
+              <button data-loading-text="loading..." class="btn btn-danger detach_volumes" href="#" value="{{ volume.id }}">Detach</button>
+            {% else %}
+              <button data-loading-text="loading..." class="btn btn-primary attach_volumes" href="#" value="">Attach</button>
+              <button data-loading-text="loading..." class="btn btn-danger delete_volumes" href="#" value="{{ volume.id }}">Delete</button>
+            {% endif %}
+              </div>
+              
+              <div class="attach_action_view_ghost" style="display: none;">
+                <button data-loading-text="loading..." class="btn btn-primary attach_volumes_save" href="#" value="{{ volume.id }}">Save</button>
+                <button data-loading-text="loading..." class="btn btn-danger attach_volumes_cancel" href="#" value="">Cancel</button>
+              </div>
+            </td>
         </tr>
+          {% endif %}
         {% endfor %}
     </tbody>
 </table>
+
+    <script>
+        $("button.delete_volumes").click(function() {
+            var that = $(this);
+            that.button('loading');
+            var params={
+                'vol_id': that.attr("value")
+            };
+            $.ajax({
+                url: "/volumes/delete_volume",
+                type: "POST",
+                data: params,
+                success: function(data) {
+                    $("button.delete_volumes").button('reset');
+                    that.parents("tr").hide();
+                },
+                crossDomain: false
+            })
+        });
+        
+        $("button.attach_volumes").click(function() {
+            var that = $(this);
+            //that.button('loading');
+            that.parents("tr").find("div.attach_action_view").hide();
+            that.parents("tr").find("div.attach_action_view_ghost").show();
+            $.ajax({
+                url: "/instances/describe_instances",
+                type: "POST",
+                data: { 'feed': 'volume_feed' },
+                success: function(data) {
+                  that.parents("tr").find(".attach_device_view").html('<input id="ghost_device_name" style="width: auto;" type="text" />');
+                  that.parents("tr").find(".attach_instance_view").html(data);
+                },
+                crossDomain: false
+            });
+        });
+        
+        $("button.attach_volumes_cancel").click(function() {
+          var that = $(this);
+          that.parents("tr").find("div.attach_action_view_ghost").hide();
+          that.parents("tr").find("div.attach_action_view").show();
+          that.parents("tr").find(".attach_instance_view").html("None");
+          that.parents("tr").find(".attach_device_view").html("None");
+        });
+        
+        $("button.attach_volumes_save").click(function() {
+          var that = $(this);
+          var params = {
+            'vol_id': that.attr("value"),
+            'instance_id': $("select#ghost_instance_ids").val(),
+            'device_name': $("input#ghost_device_name").val()
+          };
+          $.ajax({
+                url: "/volumes/attach_volume",
+                type: "POST",
+                data: params,
+                success: function(data) {
+                  $("div.tab-pane").load("/volumes/describe_volumes");
+                },
+                crossDomain: false
+            });
+        });
+
+        $("button.detach_volumes").click(function() {
+            var that = $(this);
+            that.button('loading');
+            var params={
+                'vol_id': that.attr("value")
+            }
+            $.ajax({
+                url: "/volumes/detach_volume",
+                type: "POST",
+                data: params,
+                success: function(data) {
+                    that.button('reset');
+                    $("div.tab-pane").load("/volumes/describe_volumes");
+                },
+                crossDomain: false
+            })
+        });
+
+    </script>
