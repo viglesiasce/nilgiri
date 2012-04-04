@@ -42,11 +42,17 @@ import dashboard.nilgiri.commands.euca.runinstances
 
 
 def describe_instances(request):
+    feed = request.POST.get('feed', '')
     nilCmd = dashboard.nilgiri.commands.euca.describeinstances.DescribeInstances()
     reservations = nilCmd.main_cli()
     context = { 'reservations': reservations }
-    template = 'instances/describe_instances.html'
-    return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    if not feed:
+        template = 'instances/describe_instances.html'
+        return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
+    else:
+        if feed == "volume_feed":
+            template = 'instances/instance_ids.html'
+            return shortcuts.render_to_response(template, context, context_instance=RequestContext(request))
 
 
 def terminate_instances(request):
