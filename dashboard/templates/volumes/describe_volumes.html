@@ -122,11 +122,13 @@
                 type: "POST",
                 data: params,
                 success: function(data) {
+                  that.delay(2000).queue(function() {
                     that.button('reset');
                     $("div.tab-pane").load("/volumes/describe_volumes");
+                  });
                 },
                 crossDomain: false
-            })
+            });
         });
 
     </script>
