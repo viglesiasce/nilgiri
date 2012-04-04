@@ -30,7 +30,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/describeinstances.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/describevolumes.py
 
 import nilgiri.commands.nilgiricommand
 from boto.roboto.param import Param
@@ -44,5 +44,4 @@ class DescribeVolumes(nilgiri.commands.nilgiricommand.NilgiriCommand):
     def main_cli(self):
         volumes = self.main()
         return volumes
-        #self.display_volumes(volumes)
 
