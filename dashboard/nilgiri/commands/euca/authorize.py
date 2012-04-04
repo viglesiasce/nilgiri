@@ -30,7 +30,7 @@
 #
 # Author: Imran Hossain Shaon mdshaonimran@gmail.com
 
-# file: nilgiri/dashboard/nilgiri/commands/euca/startinstances.py
+# file: nilgiri/dashboard/nilgiri/commands/euca/authorize.py
 
 
 import nilgiri.commands.nilgiricommand
