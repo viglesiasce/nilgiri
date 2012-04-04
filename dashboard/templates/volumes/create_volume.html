@@ -1,24 +1,46 @@
     <table class="table table-bordered table-striped">
         <thead>
-            <th>Protocol</th>
-            <th>From Port</th>
-            <th>To Port</th>
-            <th>CIDR IP</th>
-            <th>Action</th>
+            <th>Size</th>
+            <th>Zone</th>
         </thead>
         <tbody>
             <tr>
-                <td>
-                    <select id="ip_protocol">
-                        <option value="tcp">TCP</option>
-                        <option value="udp">UDP</option>
-                        <option value="icmp">ICMP</option>
-                    </select>
-                </td>
-                <td><input id="from_port" style="width: auto;" type="text" /></td>
-                <td><input id="to_port" style="width: auto;" type="text" /></td>
-                <td><input id="cidr_ip" style="width: auto;" type="text" /></td>
-                <td><button class="btn btn-primary save_rules" href="#" value="">Save</button></td>
+                <td><input id="vol_size" type="text" /></td>
+                <td><div id="zones"></td>
+                <td><button data-loading-text="loading..." class="btn btn-primary save_volumes" href="#" value="">Save</button></td>
             </tr>
         </tbody>
     </table>
+    
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "/zones/describe_available_zones",
+                type: "POST",
+                data: { 'feed': 'zone_feed'},
+                success: function(data) {
+                    $("div#zones").html(data);
+                },
+                crossDomain: false
+            });
+        });
+        
+        $("button.save_volumes").click(function() {
+            $("button.save_volumes").button('loading');
+            var that = $(this);
+            var params={
+                'vol_size':$("#vol_size").val(),
+                'vol_zone':$("#ghost_available_zones").val()
+            }
+            $.ajax({
+                url: "/volumes/create_volume",
+                type: "POST",
+                data: params,
+                success: function(data) {
+                    $("button.save_volumes").button('reset');
+                    $("div.tab-pane").html(data);
+                },
+                crossDomain: false
+            });
+        });
+    </script>
