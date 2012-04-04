@@ -1,0 +1,28 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Volume ID</th>
+            <th>Size</th>
+            <th>Snapshot ID</th>
+            <th>Zone</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Zone</th>
+            <th>Status</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ volume.id }}</td>
+            <td>{{ volume.size }}</td>
+            <td>{{ volume.snapshot_id }}</td>
+            <td>{{ volume.zone }}</td>
+            <td>{{ volume.status }}</td>
+            <td>{{ volume.create_time }}</td>
+            <td>{{ volume.attach_data.instance_id }}</td>
+            <td>{{ volume.attach_data.device }}</td>
+            <td>{{ volume.attach_data.attach_time }}</td>
+        </tr>
+    </tbody>
+</table>
