@@ -37,23 +37,12 @@ from django.template.context import RequestContext
 
 # imports nilgiri
 import nilgiri.commands.nilgiricommand
-import nilgiri.commands.euca.describekeypairs
-import nilgiri.commands.euca.describeinstances
-import nilgiri.commands.euca.describevolumes
-import nilgiri.commands.euca.describeregions
-import nilgiri.commands.euca.describeimages
-import nilgiri.commands.euca.terminateinstances
-
 
 def home(request):
     
     # version
     nilCmd = nilgiri.commands.nilgiricommand.NilgiriCommand()
     nversion = nilCmd.nversion()
-        
-    # regions
-    nilCmd = nilgiri.commands.euca.describeregions.DescribeRegions()
-    regions = nilCmd.main_cli()
     
     context = { 'nversion': nversion }
     
