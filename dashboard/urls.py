@@ -73,6 +73,13 @@ urlpatterns = patterns('',
     # volumes
     url(r'^volumes/describe_volumes$', 'callbacks.volumes.views.describe_volumes', name='describe_volumes'),
     url(r'^volumes/create_volume_view$', 'callbacks.volumes.views.create_volume_view', name='create_volume_view'),
+    url(r'^volumes/create_volume$', 'callbacks.volumes.views.create_volume', name='create_volume'),
+    url(r'^volumes/delete_volume$', 'callbacks.volumes.views.delete_volume', name='delete_volume'),
+    url(r'^volumes/attach_volume$', 'callbacks.volumes.views.attach_volume', name='attach_volume'),
+    url(r'^volumes/detach_volume$', 'callbacks.volumes.views.detach_volume', name='detach_volume'),
+    
+    # zones
+    url(r'^zones/describe_available_zones$', 'callbacks.zones.views.describe_available_zones', name='describe_available_zones'),
     
     
     url(r'^dajax/$', 'callbacks.views.dajax', name='dajax'),
