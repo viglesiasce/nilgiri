@@ -1,7 +1,9 @@
 <select style="width: auto;" id="ghost_instance_ids">
     {% for reservation in reservations %}
         {% for instance in reservation.instances %}
-        <option value="{{ instance.id }}">{{ instance.id }}</option>
+            {% if instance.state == "running" %}
+            <option value="{{ instance.id }}">{{ instance.id }}</option>
+            {% endif %}
         {% endfor %}
     {% endfor  %}
 </select>
