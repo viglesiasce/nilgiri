@@ -207,14 +207,15 @@
         <script src="{{ STATIC_URL }}assets/js/bootstrap-carousel.js"></script>
         <script src="{{ STATIC_URL }}assets/js/bootstrap-typeahead.js"></script>
         <script src="{{ STATIC_URL }}assets/js/application.js"></script>
-<div style="display:none">
-    <input type="hidden" name="csrfmiddlewaretoken" value="$csrf_token"/>
-</div>
+
         <script>
             $(document).ready(function() {
                 $.ajax({
                     url: "/instances/describe_instances",
                     type: "POST",
+                    data: {
+                      csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
                     success: function(data) {
                         $("div#running_instances").html(data);
                     },
@@ -225,7 +226,7 @@
 
      
                 var refreshId = setInterval(function() {
-                    $('div#running_instances').load('/instances/describe_instances');
+//                    $('div#running_instances').load('/instances/describe_instances');
                 }, 10000);
             });
             $("li#tab_describe_volumes").click(function() {
@@ -233,6 +234,9 @@
                 $.ajax({
                     url: "/volumes/describe_volumes",
                     type: "POST",
+                    data: {
+                      csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
                     success: function(data) {
                         $("div.tab-pane").html(data);
                     },
